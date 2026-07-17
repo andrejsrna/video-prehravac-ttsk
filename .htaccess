@@ -1,0 +1,3 @@
+<FilesMatch "\.(mp4|m4v|webm|mov)$">
+    Header set Accept-Ranges bytes
+</FilesMatch>
