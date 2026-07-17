@@ -1,7 +1,6 @@
 <?php
-require_once("connection.php");
-require_once("validation.php");
-session_start();
+require_once(__DIR__ . "/../connection.php");
+require_once(__DIR__ . "/validation.php");
 
 $msg = "";
 
@@ -28,7 +27,7 @@ if (isset($_POST['upload']) && isset($_FILES['video'])) {
         } else {
             $safeName = preg_replace('/[^A-Za-z0-9._-]/', '_', basename($original));
             $safeName = time() . '_' . $safeName;
-            $targetDir = __DIR__ . "/video/";
+            $targetDir = __DIR__ . "/../video/";
             $target = $targetDir . $safeName;
 
             if (move_uploaded_file($_FILES['video']['tmp_name'], $target)) {

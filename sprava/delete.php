@@ -1,7 +1,6 @@
 <?php
-require_once("connection.php");
-require_once("validation.php");
-session_start();
+require_once(__DIR__ . "/../connection.php");
+require_once(__DIR__ . "/validation.php");
 
 if (empty($_SESSION["authenticated"])) {
     http_response_code(403);
@@ -21,7 +20,7 @@ if (isset($_GET["delete"])) {
     }
 
     if ($link !== "") {
-        $videoPath = __DIR__ . "/video/" . basename($link);
+        $videoPath = __DIR__ . "/../video/" . basename($link);
         if (file_exists($videoPath)) {
             unlink($videoPath);
         }

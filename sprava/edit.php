@@ -1,7 +1,6 @@
 <?php
-require_once("connection.php");
-require_once("validation.php");
-session_start();
+require_once(__DIR__ . "/../connection.php");
+require_once(__DIR__ . "/validation.php");
 
 if (empty($_SESSION["authenticated"])) {
     http_response_code(403);
