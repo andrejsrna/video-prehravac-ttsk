@@ -1,0 +1,51 @@
+services:
+  app:
+    build: .
+    ports:
+      - "${APP_PORT:-8080}:80"
+    environment:
+      DB_HOST: mysql
+      DB_USER: ${DB_USER:-video}
+      DB_PASSWORD: ${DB_PASSWORD:-video}
+      DB_NAME: ${DB_NAME:-video}
+      APP_PASSWORD: ${APP_PASSWORD:-admin}
+    volumes:
+      - video_data:/var/www/html/video
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
+
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
+      MYSQL_DATABASE: ${DB_NAME:-video}
+      MYSQL_USER: ${DB_USER:-video}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-video}
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p$${MYSQL_ROOT_PASSWORD} --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+
+  phpmyadmin:
+    image: phpmyadmin:5.2-apache
+    ports:
+      - "${PHPMYADMIN_PORT:-8081}:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      UPLOAD_LIMIT: 128M
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
+  video_data:

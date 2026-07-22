@@ -27,3 +27,13 @@ Priečinok `video/` musí byť pripojený ako persistentný volume v Coolify (ab
 - SQL dotazy v edit.php/delete.php prevedené na prepared statements (predtým SQL injection)
 - `video/.htaccess` blokuje spúšťanie PHP v priečinku s videami (defense-in-depth)
 - Odstránené: WordPress, `b24.php`, `64abafc4/about.php`, nefunkčný `upload2.php`
+
+## Lokálne spustenie cez Docker Compose
+
+1. Skopíruj `.env.example` ako `.env` a zmeň predvolené heslá.
+2. Spusti `docker compose up -d --build`.
+3. Aplikácia bude na `http://localhost:8080`, administrácia na
+   `http://localhost:8080/sprava/` a phpMyAdmin na `http://localhost:8081`.
+
+Do phpMyAdminu sa prihlás hodnotami `DB_USER` a `DB_PASSWORD` zo súboru `.env`.
+MySQL dáta aj nahrané videá sú uložené v pomenovaných Docker volumes.
